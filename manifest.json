@@ -1,0 +1,21 @@
+{
+  "name": "FairyguiNodeTree",
+  "description": "显示Fiarygui节点树",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "devtools_page": "devtools.html"
+}

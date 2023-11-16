@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" http-equiv="Content-Security-Policy"
+        content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+    <style>
+        body {
+            display: flex;
+        }
+    
+        #directory {
+            flex: 1;
+            padding-right: 20px;
+        }
+    
+        .folder,
+        .file {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            background-color: #a0ecaa;
+        }
+    
+        .icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+    
+        .icon-open::before {
+            content: "▼";
+        }
+    
+        .icon-closed::before {
+            content: "▶";
+        }
+    
+        .nested {
+            display: none;
+            padding-left: 40px;
+        }
+    
+        .folder.open .nested {
+            display: block;
+        }
+    
+        .directoryName {
+            color: black;
+        }
+    
+        .directoryName-selected {
+            color: yellow;
+        }
+    
+    
+    
+        /* 
+            .folder.open .icon-closed::before {
+                content: "▼";
+            } */
+    
+    
+        #detailsPanel {
+            flex: 1;
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 300px;
+            /* 设置 detailsPanel 的宽度 */
+            height: 500px;
+            /* 设置 detailsPanel 的高度 */
+            overflow: auto;
+            /* 添加滚动条 */
+            background-color: #dcdfba;
+        }
+
+        #gridMsg{
+            color: red;
+        }
+    
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            /* 两列布局，可以根据需要调整列数和每列的宽度 */
+            grid-gap: 10px;
+            /* 元素之间的间隔 */
+        }
+    
+        .grid-item {
+            padding: 0px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+    
+        /* Flexbox 布局样式，使文本和输入框在同一行显示 */
+        .flex-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    
+        /* 输入框样式 */
+        input {
+            width: 60%;
+            /* 调整输入框宽度 */
+            padding: 8px;
+            box-sizing: border-box;
+        }
+    
+        input.readonly {
+            color: rgb(255, 94, 0);
+        }
+
+        .leftBtnDiv{
+            background: rgb(214, 241, 116);
+            max-width: 100px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 2px;
+        }
+        li {
+            margin-bottom: 20px;
+            overflow: auto;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="leftBtnDiv">
+        <ul>
+            <li>
+                <span id="msgTxt">输出一些日志呀输出一些日志呀输出一些日志呀输出一些日志呀</span>
+            </li>
+            <li>
+                <button type="button" id="loadBtn">加载扩展程序</button>
+            </li>
+            <li>
+                <button type="button" id="refreshBtn">刷新节点树</button>
+            </li>
+            <li>
+                <button type="button" id="pauseBtn">暂停游戏</button>
+            </li>
+            <li>
+                <button type="button" id="drawBtn">标记节点</button>
+            </li>
+            <li>
+                <button type="button" id="consoleBtn">打印选中节点</button>
+            </li>
+        </ul>
+    </div>
+    <div id="directory"></div>
+    <div id="detailsPanel">
+        <span id="gridMsg">右侧网格的一些输出</span>
+    </div>
+
+   
+    <script src="panel.js"></script>
+</body>
+
+</html>
