@@ -534,7 +534,7 @@ consoleBtn.onclick = () => {
 function checkInjectGame(callback) {
   let raw = `window._ext_test();`
   chrome.devtools.inspectedWindow.eval(raw, function (result, e) {
-    console.log('检查是否已经注入脚本到游戏主循环', result, e);
+    //console.log('检查是否已经注入脚本到游戏主循环', result, e);
     if (e) {
       //没有注入游戏主循环
       isShowBtns(false);
@@ -796,6 +796,8 @@ function injectGameLoop() {
     window._ext_graph;
     function _ext_draw_graph(guid) {
       if (window._ext_NodeTable[guid] && window._ext_NodeTable[guid].parent) {
+
+
         let node = window._ext_NodeTable[guid];
         let x = node.x;
         let y = node.y;
@@ -832,6 +834,23 @@ function injectGameLoop() {
           let v22 = graph.parent.rootToLocal(rx, ry);
           graph.setPosition(v22.x, v22.y);
           //console.log('_ext_draw_graph', graph, graph.parent._name, v22.x, v22.y);
+          let scales = [1, 1];
+          //获取节点的全局缩放
+          let getGScale = (node) => {
+            if (node == null) {
+              return;
+            }
+            scales[0] *= node.scaleX;
+            scales[1] *= node.scaleY;
+            if (node.parent == null) {
+              return;
+            }
+            getGScale(node.parent); //递归查找父节点是否还在节点树
+          };
+          getGScale(node);
+          graph.scaleX = scales[0];
+          graph.scaleY = scales[1];
+          //console.log('标记框全局缩放', scales);
         }
         else {
           //通用项目
