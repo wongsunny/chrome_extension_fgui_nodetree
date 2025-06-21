@@ -801,11 +801,12 @@ function injectGameLoop() {
         let node = window._ext_NodeTable[guid];
         let x = node.x;
         let y = node.y;
-        let v2 = node.parent.localToRoot(x, y);
-        let rx = v2.x;
-        let ry = v2.y;
         let w = node.width;
         let h = node.height;
+
+        let rect = node.parent.localToGlobalRect(x, y, w, h);
+        //console.log('rect', rect);
+ 
         if (window._ext_graph == null) {
           window._ext_graph = new fgui.GGraph();
           window._ext_graph._name = '_ext_draw_graph'
@@ -814,7 +815,7 @@ function injectGameLoop() {
         window._ext_graph.visible = true;
         let graph = window._ext_graph;
         //graph.setPosition(rx, ry);
-        graph.setSize(w, h);
+        graph.setSize(rect.width, rect.height);
         let color = new fgui.Color4();
         color.a = 0;
         graph.shape.drawRect(3, new fgui.Color4(0xFF0000), color);
@@ -823,41 +824,31 @@ function injectGameLoop() {
         }
 
         //适配xm4的合批, fgui.GRoot.inst.addChild(graph);渲染不出来
-        if (fgui.GRoot.inst && 
+        if ((fgui.GRoot.inst &&
           fgui.GRoot.inst._children &&
-          fgui.GRoot.inst._children[0] &&
-          fgui.GRoot.inst._children[0]._children &&
-          fgui.GRoot.inst._children[0]._children[fgui.GRoot.inst._children[0]._children.length - 1] && 
-          fgui.GRoot.inst._children[0]._children[fgui.GRoot.inst._children[0]._children.length - 1]._name.includes('layer_')
+          fgui.GRoot.inst._children[1] &&
+          fgui.GRoot.inst._children[1]._children &&
+          fgui.GRoot.inst._children[1]._children[fgui.GRoot.inst._children[1]._children.length - 1] &&
+          fgui.GRoot.inst._children[1]._children[fgui.GRoot.inst._children[1]._children.length - 1]._name.includes('layer_'))
+          || (fgui.GRoot.inst &&
+            fgui.GRoot.inst._children &&
+            fgui.GRoot.inst._children[0] &&
+            fgui.GRoot.inst._children[0]._children &&
+            fgui.GRoot.inst._children[0]._children[fgui.GRoot.inst._children[0]._children.length - 1] &&
+            fgui.GRoot.inst._children[0]._children[fgui.GRoot.inst._children[0]._children.length - 1]._name.includes('layer_'))
         ) {
           fgui.GRoot.inst._children[0]._children[fgui.GRoot.inst._children[0]._children.length - 1].addChild(graph);
-          let v22 = graph.parent.rootToLocal(rx, ry);
-          graph.setPosition(v22.x, v22.y);
-          //console.log('_ext_draw_graph', graph, graph.parent._name, v22.x, v22.y);
-          let scales = [1, 1];
-          //获取节点的全局缩放
-          let getGScale = (node) => {
-            if (node == null) {
-              return;
-            }
-            scales[0] *= node.scaleX;
-            scales[1] *= node.scaleY;
-            if (node.parent == null) {
-              return;
-            }
-            getGScale(node.parent); //递归查找父节点是否还在节点树
-          };
-          getGScale(node);
-          graph.scaleX = scales[0];
-          graph.scaleY = scales[1];
-          //console.log('标记框全局缩放', scales);
+
         }
         else {
           //通用项目
-          graph.setPosition(rx, ry);
           fgui.GRoot.inst.addChild(graph);
         }
      
+
+        let rect2 = graph.parent.globalToLocalRect(rect.x, rect.y, rect.width, rect.height);
+        graph.setPosition(rect2.x, rect2.y);
+        graph.setSize(rect2.width, rect2.height);
       }
       
     }
