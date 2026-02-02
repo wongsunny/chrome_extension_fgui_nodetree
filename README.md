@@ -11,8 +11,9 @@
 3. 点击左上角的加载已经解压的扩展程序
 4. 导入该文件夹的根目录
 5. chrome调试栏中就会添加新的tab(FairyguiNodeTree) 
-6. 该插件依赖于window.fgui.GRoot.inst, 确保是在windows可访问的
+6. 该插件依赖于window.fgui.GRoot.inst, 确保是在window可访问的
 ## 界面ui
 ![预览图1](/img/p1.png)
+![预览图2](/img/Snipaste_2026-02-02_16-17-23.png)
 ## BUG反馈 
 联系:wwx
