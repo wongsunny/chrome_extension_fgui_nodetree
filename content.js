@@ -3,11 +3,16 @@
  * @Date: 2023-11-10 15:40:36
  * @Description: 
  */
+
+
 //转发普通窗口的消息给DevTools
 let rules = [
     'fgui-ext-get-user-data',
     'fgui-ext-check',
-    'fgui-ext-check-node'
+    'fgui-ext-check-node',
+    'three-ext-get-user-data',
+    'three-ext-check',
+    'three-ext-check-node',
 ];
 window.addEventListener('message', function (event) {
     //console.log('转发普通窗口的消息给DevTools', event);
@@ -16,5 +21,7 @@ window.addEventListener('message', function (event) {
         chrome.runtime.sendMessage({ data, token }).catch(e => { });
     }
 }, false);
+
+
 
 //window.postMessage({ token: 'fgui-ext-get-user-data', data: keys });

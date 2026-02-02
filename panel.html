@@ -9,7 +9,7 @@
             display: flex;
         }
     
-        #directory {
+        .tree {
             flex: 1;
             padding-right: 20px;
         }
@@ -62,7 +62,7 @@
             } */
     
     
-        #detailsPanel {
+        .detailsPanelCls {
             flex: 1;
             border: 1px solid #ccc;
             padding: 10px;
@@ -77,6 +77,10 @@
 
         #gridMsg{
             color: red;
+        }
+
+        #gridMsg_three{
+            color: rgb(255, 0, 234);
         }
     
         .grid-container {
@@ -126,14 +130,47 @@
             overflow: auto;
         }
 
+        /* 竖排排列 */
+        #modeSwitch {
+            display: flex;
+            flex-direction: column; /* 垂直排列 */
+            gap: 4px; /* 每行间距 */
+        }
+
+        /* 缩小单选按钮 */
+        #modeSwitch input[type="radio"] {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle; /* 与文字对齐 */
+            margin-right: 4px; /* 控制和文字间距 */
+        }
+        
+        #ext-tooltip {
+        position: fixed;
+        z-index: 9999;
+        max-width: 240px;
+        padding: 6px 8px;
+        font-size: 12px;
+        line-height: 1.4;
+        color: #fff;
+        background: rgba(30, 30, 30, 0.95);
+        border-radius: 4px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.12s;
+        }
     </style>
 </head>
 
 <body>
-    <div class="leftBtnDiv">
+    <div id="modeSwitch">
+        <label><input type="radio" name="debugMode" value="fgui" checked> 调试fgui</label>
+        <label><input type="radio" name="debugMode" value="threejs" id="radio_three"> 调试threejs</label>
+    </div>
+    <div id="fguiBtns" class="leftBtnDiv">
         <ul>
             <li>
-                <span id="ver">ver:2025-6-21_m2</span>
+                <span id="ver">ver:2026-1-10_m1</span>
             </li>
             <li>
                 <span id="msgTxt">输出一些日志呀输出一些日志呀输出一些日志呀输出一些日志呀</span>
@@ -155,12 +192,31 @@
             </li>
         </ul>
     </div>
-    <div id="directory"></div>
-    <div id="detailsPanel">
-        <span id="gridMsg">右侧网格的一些输出</span>
+
+    <!-- ThreeJS 按钮列表 -->
+    <div id="threejsBtns" class="leftBtnDiv" style="display:none;">
+        <ul>
+            <li>
+                <span id="msgTxt_three" style="color: blue;">输出一些日志呀输出一些日志呀输出一些日志呀输出一些日志呀</span>
+            </li>
+            <li><button type="button" id="loadBtn_three">加载扩展程序</button></li>
+            <li><button type="button" id="refreshBtn_three">刷新列表</button></li>
+            <li><button type="button" id="pauseBtn_three">暂停游戏</button></li>
+            <li><button type="button" id="drawBtn_three">标记节点</button></li>
+            <li><button type="button" id="consoleBtn_three">打印选中节点</button></li>
+        </ul>
     </div>
 
-   
+    <div id="directory" class="tree"></div>
+    <div id="directory_three" class="tree" style="display:none;"></div>
+    <div id="detailsPanel" class="detailsPanelCls">
+        <span id="gridMsg">右侧网格的一些输出</span>
+    </div>
+    <div id="detailsPanel_three" class="detailsPanelCls" style="display:none;">
+        <span id="gridMsg_three">右侧网格的一些输出</span>
+    </div>
+
+    <div id="ext-tooltip"></div>
     <script src="panel.js"></script>
 </body>
 
