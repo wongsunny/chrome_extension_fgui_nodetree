@@ -1344,8 +1344,8 @@ function injectGameLoop() {
           live = true;
           return;
         }
-        if (node._ext_parent_guid) {
-          live = true
+        if (node._ext_parent_guid && window._ext_NodeTable[node._ext_parent_guid]) {
+          checkFunc(window._ext_NodeTable[node._ext_parent_guid]); 
           return;
         }
         if (node.parent == null) {
