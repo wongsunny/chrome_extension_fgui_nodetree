@@ -1256,6 +1256,15 @@ function injectGameLoop() {
         window._ext_NodeTable[id] = node;
       }
 
+      if (node.constructor == fgui.GLoader) {
+        //GLoader的子节点是_content2上
+        let c = node._content2
+        if (node._content2) {
+          node._content2._ext_parent_guid = node['_guid']
+        }
+        _traversalTree(c);
+        return
+      }
       if (node._children && node._children.length) {
         for (let i = 0; i < node._children.length; i++) {
           const c = node._children[i];
@@ -1291,6 +1300,14 @@ function injectGameLoop() {
       else {
         window._ext_transmitData = [propety];
       }
+
+      if (node.constructor == fgui.GLoader) {
+        //GLoader的子节点是_content2上
+        let c = node._content2
+        _traversalTree2(c, propety)
+        return
+      }
+
       if (node._children && node._children.length) {
         for (let i = 0; i < node._children.length; i++) {
           const c = node._children[i];
@@ -1325,6 +1342,10 @@ function injectGameLoop() {
         }
         if (node == fgui.GRoot.inst) { //根节点没有父节点了
           live = true;
+          return;
+        }
+        if (node._ext_parent_guid) {
+          live = true
           return;
         }
         if (node.parent == null) {
